@@ -238,12 +238,9 @@ public class AWSCodeDeployPublisher extends Publisher {
             } else {
 
               String deploymentId = createDeployment(aws, revisionLocation);
-              if(build instanceof AbstractBuild<?,?>) {
-                  AbstractBuild<?,?> ab = (AbstractBuild<?,?>)build;
-                  envVars.put(AWS_CODEDEPLOY_DEPLOYMENT_ID, deploymentId);
-                  EnvVars envVarsObject = new EnvVars(envVars);
-                  ab.getEnvironments().set(0, Environment.create(envVarsObject));
-              }
+              envVars.put(AWS_CODEDEPLOY_DEPLOYMENT_ID, deploymentId);
+              EnvVars envVarsObject = new EnvVars(envVars);
+              build.getEnvironments().set(0, Environment.create(envVarsObject));
               success = waitForDeployment(aws, deploymentId);
             }
 
